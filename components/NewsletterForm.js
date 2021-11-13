@@ -40,14 +40,14 @@ const NewsletterForm = ({ title = 'Đăng ký để nhận được thông tin m
       <form className="flex flex-col sm:flex-row" onSubmit={subscribe}>
         <div>
           <label className="sr-only" htmlFor="email-input">
-            Email address
+            Email
           </label>
           <input
             autoComplete="email"
             className="px-4 rounded-md w-72 dark:bg-black focus:outline-none focus:ring-2 focus:border-transparent focus:ring-primary-600"
             id="email-input"
             name="email"
-            placeholder={subscribed ? "You're subscribed !  🎉" : 'Enter your email'}
+            placeholder={subscribed ? 'Bạn đã đăng ký nhận tin mới  🎉' : 'Nhập email của bạn'}
             ref={inputEl}
             required
             type="email"
@@ -62,7 +62,7 @@ const NewsletterForm = ({ title = 'Đăng ký để nhận được thông tin m
             type="submit"
             disabled={subscribed}
           >
-            {subscribed ? 'Thank you!' : 'Sign up'}
+            {subscribed ? 'Cảm ơn!' : 'Đăng ký'}
           </button>
         </div>
       </form>
