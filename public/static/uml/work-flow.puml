@@ -1,0 +1,19 @@
+@startmindmap
+<style>
+mindmapDiagram {
+  .green {
+    BackgroundColor lightgreen
+  }
+  .rose {
+    BackgroundColor #FFBBCC
+  }
+  .your_style_name {
+    BackgroundColor lightblue
+  }
+}
+</style>
++ Chọn chuyến <<your_style_name>>
+++ Chọn sơ đồ ghế ngồi <<your_style_name>>
++++ Đặt vé và thanh toán <<your_style_name>>
+-- Chọn lộ trình ngày đặt vé <<your_style_name>>
+@endmindmap

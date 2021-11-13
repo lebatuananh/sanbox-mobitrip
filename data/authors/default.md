@@ -1,5 +1,5 @@
 ---
-name: Tails Azimuth
+name: Le Ba tuan anh
 avatar: /static/images/avatar.png
 occupation: Professor of Atmospheric Science
 company: Stanford University

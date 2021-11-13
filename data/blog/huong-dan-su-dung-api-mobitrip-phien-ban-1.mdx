@@ -1,0 +1,645 @@
+---
+title: Hướng dẫn sử dụng API Mobitrip phiên bản 1.0
+date: '2021-11-13'
+tags: ['api', 'vnpay', 'mobitrip']
+draft: false
+summary: Chi tiết hướng dẫn sử dụng API đặt vé của Mobitrip
+images: []
+layout: PostLayout
+---
+
+# TỔNG QUAN
+
+<TOCInline toc={props.toc} exclude="Overview" toHeading={3} />
+
+![Toronto](/static/images/work-flow.png)
+
+### BUS API
+
+---
+
+#### 1. Query danh sách loai phương tiện di chuyển
+
+##### Method: GET
+
+##### URL: `https://mobi-api.mobihome.vn/api/v1/mobi/vnpay/bus/types`
+
+##### Response:
+
+Dữ liệu trả về là một mảng danh sách phương tiện bao gồm:
+
+- id: Id phương tiện
+- name: Tên phương tiện
+- code: Mã phương tiện
+
+#### Ví dụ:
+
+**_Request_**
+
+```
+    GET https://mobi-api.mobihome.vn/api/v1/mobi/vnpay/bus/types
+```
+
+**_Dữ liệu trả về dạng json như sau:_**
+
+```
+{
+   [
+	  {
+	    "id": 1,
+	    "name": "Giường nằm",
+	    "code": "1"
+	  },
+	  {
+	    "id": 11,
+	    "name": "Limousine",
+	    "code": "2"
+	  },
+	  {
+	    "id": 16,
+	    "name": "7 Chỗ ",
+	    "code": "4"
+	  },
+	  {
+	    "id": 17,
+	    "name": "Du Thuyền-Tàu Cao Tốc",
+	    "code": "5"
+	  },
+	  {
+	    "id": 19,
+	    "name": "Starrex 9 chỗ",
+	    "code": "6"
+	  },
+	  {
+	    "id": 21,
+	    "name": "Ghế ngồi ",
+	    "code": "3"
+	  }
+	]
+}
+```
+
+#### 2. Query danh sách chuyến đi
+
+##### Method: POST
+
+##### URL: `https://mobi-api.mobihome.vn/api/v1/mobi/vnpay/bus/trips`
+
+##### Request body:
+
+- tripDateStart: Ngày bắt đầu chuyến đi (định dạng **_YYYYMMDD_**)
+- destinationIdStart: id điểm đi
+- destinationIdEnd: id điểm đến
+- codes: mảng code loại phương tiện
+
+##### Response:
+
+Dữ liệu trả về là danh sách chuyến đi bao gồm:
+
+- companyId: id công ty
+- companyName: Tên công ty
+- tripId: id chuyến đi
+- minPrice: giá tốt nhất của chuyến đi
+- busId: id phương tiện
+- busType: id loại phương tiện
+- busTypeText: loại phương tiện
+- color: màu xe
+- countTicket: số lượng vé
+- countBooked: số lượng vé đã đặt
+- countFloorSeat: số lượng khách chở thêm
+- startDate: ngày bắt đầu
+- startTime: thời gian bắt đầu.
+- endTime: thời gian kết thúc
+
+#### Ví dụ:
+
+**_Request_**
+
+```
+    POST https://mobi-api.mobihome.vn/api/v1/mobi/vnpay/bus/trips
+    Content-Type: application/json
+    Accept: application/json
+    Body: {
+        tripDateStart: 20191218,
+        destinationIdStart: 'BA199691-AF8C-E411-83AD-00237DCF4C9C',
+        destinationIdEnd: '30995FCF-B6F5-E511-8A01-005056876D9E',
+        codes: [1,2,3,4,5,6]
+    }
+```
+
+**_Dữ liệu trả về dạng json như sau:_**
+
+```
+[
+  {
+    "companyId": 126,
+    "companyName": "Công ty TNHH TM&DV Hải Phượng",
+    "tripId": "75d30c97-2379-e811-9075-0cc47a96aaf3",
+    "busPriceId": 686,
+    "minPrice": 70000,
+    "busId": 595,
+    "routeId": 448,
+    "tripLicensePlate": "",
+    "startDate": 20191218,
+    "startTime": 201912180600,
+    "endTime": 201912181000,
+    "status": 2,
+    "countTicket": 44,
+    "countBooked": 15,
+    "countFloorSeat": 4,
+    "tripType": 0,
+    "minuteFromDepart": 0,
+    "minuteFromDepart1": 80,
+    "driverName": null,
+    "employeeName": null,
+    "color": "ff7f00",
+    "busTypeText": "Giường nằm 44 chỗ",
+    "busType": 1,
+    "isHomePickup": true
+  },
+  {
+    "companyId": 126,
+    "companyName": "Công ty TNHH TM&DV Hải Phượng",
+    "tripId": "378519c6-2379-e811-9075-0cc47a96aaf3",
+    "busPriceId": 643,
+    "minPrice": 60000,
+    "busId": 312,
+    "routeId": 448,
+    "tripLicensePlate": "",
+    "startDate": 20191218,
+    "startTime": 201912180700,
+    "endTime": 201912181100,
+    "status": 2,
+    "countTicket": 36,
+    "countBooked": 6,
+    "countFloorSeat": 0,
+    "tripType": 0,
+    "minuteFromDepart": 0,
+    "minuteFromDepart1": 80,
+    "driverName": null,
+    "employeeName": null,
+    "color": "",
+    "busTypeText": "Samco 34",
+    "busType": 3,
+    "isHomePickup": true
+  },
+  {
+    "companyId": 126,
+    "companyName": "Công ty TNHH TM&DV Hải Phượng",
+    "tripId": "969337d9-2379-e811-9075-0cc47a96aaf3",
+    "busPriceId": 686,
+    "minPrice": 70000,
+    "busId": 594,
+    "routeId": 448,
+    "tripLicensePlate": "",
+    "startDate": 20191218,
+    "startTime": 201912180800,
+    "endTime": 201912181200,
+    "status": 2,
+    "countTicket": 44,
+    "countBooked": 21,
+    "countFloorSeat": 4,
+    "tripType": 0,
+    "minuteFromDepart": 0,
+    "minuteFromDepart1": 80,
+    "driverName": null,
+    "employeeName": null,
+    "color": "ff7f00",
+    "busTypeText": "Giường nằm 44 chỗ",
+    "busType": 1,
+    "isHomePickup": true
+  }
+]
+```
+
+### LOCATION API
+
+---
+
+#### 1. Query danh sách địa điểm
+
+##### Method: GET
+
+##### URL: `https://mobi-api.mobihome.vn/api/v1/mobi/vnpay/location`
+
+##### Response:
+
+Dữ liệu trả về là 1 mảng địa điểm, cấu trúc bao gồm:
+
+- locationId: Id địa điểm
+- parentId: Id địa điểm cha
+- name: Tên địa điểm.
+- treeLevel: Mức hiển thị trong cây khu vực
+- locationType: Loại địa điểm
+
+#### Ví dụ:
+
+**_Request_**
+
+```
+    GET https://mobi-api.mobihome.vn/api/v1/mobi/vnpay/location
+```
+
+**_Dữ liệu trả về dạng json như sau:_**
+
+```
+[
+  {
+    "locationId": "0b9d59c1-f388-4500-b49e-53ac4105e91b",
+    "parentId": "00000000-0000-0000-0000-000000000000",
+    "treeLevel": 1,
+    "locationType": 1,
+    "code": null,
+    "orderSort": 0,
+    "name": "Hà Nội",
+    "shortName": "Hà Nội",
+    "fullPathName": "Hà Nội",
+    "keyword": ""
+  },
+  {
+    "locationId": "e8c7ae6b-dfd4-413d-b019-8805bb0f7024",
+    "parentId": "00000000-0000-0000-0000-000000000000",
+    "treeLevel": 1,
+    "locationType": 1,
+    "code": null,
+    "orderSort": 0,
+    "name": "HCM",
+    "shortName": "HCM",
+    "fullPathName": "HCM",
+    "keyword": "Sài gòn, Hồ Chí Minh, Thành Phố Hồ Chí Minh, Sài Thành, Hòn Ngọc Viễn Đông, Thành Phố"
+  },
+  {
+    "locationId": "0162ae11-ab4a-e411-b131-001e4ff3ad72",
+    "parentId": "00000000-0000-0000-0000-000000000000",
+    "treeLevel": 1,
+    "locationType": 1,
+    "code": null,
+    "orderSort": 0,
+    "name": "An Giang",
+    "shortName": "An Giang",
+    "fullPathName": "An Giang",
+    "keyword": ""
+  },
+  {
+    "locationId": "95b2587c-2651-e411-b131-001e4ff3ad72",
+    "parentId": "00000000-0000-0000-0000-000000000000",
+    "treeLevel": 1,
+    "locationType": 1,
+    "code": null,
+    "orderSort": 0,
+    "name": "Bạc Liêu",
+    "shortName": "BL",
+    "fullPathName": "Bạc Liêu",
+    "keyword": ""
+  }
+]
+```
+
+#### 2. Query địa điểm đến theo địa điểm đi
+
+##### Method: GET
+
+##### URL: `https://mobi-api.mobihome.vn/api/v1/mobi/vnpay/location/terminus`
+
+##### Request parameters:
+
+- agentId: id đại lý
+- companyId: id công ty
+- departmentPlaceId: id điểm đi
+- searchText: text tìm kiếm điểm đến
+
+##### Response:
+
+Dữ liệu trả về là danh sách thông tin điểm đến bao gồm:
+
+- locationId: Id của điểm đến
+- name: Tên điểm đến
+- locationType: Loại khu vực
+- treeLevel: Mức hiển thị trong cây khu vực
+- kmFromDepart: Khoảng cách điểm đi -> đến (km)
+- orderSort: Vị trí sắp xếp.
+- countryGuid: Id quốc gia
+
+#### Ví dụ:
+
+**_Request_**
+
+```
+    GET https://mobi-api.mobihome.vn/api/v1/mobi/vnpay/location/terminus
+```
+
+**_Dữ liệu trả về dạng json như sau:_**
+
+```
+[
+  {
+    "locationId": "ba199691-af8c-e411-83ad-00237dcf4c9c",
+    "hasChildren": true,
+    "name": "Yên Bái",
+    "shortName": "",
+    "fullPathName": "Yên Bái",
+    "parentId": "00000000-0000-0000-0000-000000000000",
+    "countryGuid": "99f791e7-7343-42e8-8c19-3c41068b5f8d",
+    "locationType": 1,
+    "orderSort": 1036,
+    "code": "none",
+    "visibleStatus": 0,
+    "treeLevel": 1,
+    "kmFromDepart": 200
+  },
+  {
+    "locationId": "acb73689-af8c-e411-83ad-00237dcf4c9c",
+    "hasChildren": true,
+    "name": "Lào Cai",
+    "shortName": "",
+    "fullPathName": "Lào Cai",
+    "parentId": "00000000-0000-0000-0000-000000000000",
+    "countryGuid": "99f791e7-7343-42e8-8c19-3c41068b5f8d",
+    "locationType": 1,
+    "orderSort": 165,
+    "code": "none",
+    "visibleStatus": 0,
+    "treeLevel": 1,
+    "kmFromDepart": 270
+  },
+  {
+    "locationId": "4458a29e-af8c-e411-83ad-00237dcf4c9c",
+    "hasChildren": false,
+    "name": "SaPa",
+    "shortName": "",
+    "fullPathName": "SaPa,Lào Cai",
+    "parentId": "acb73689-af8c-e411-83ad-00237dcf4c9c",
+    "countryGuid": "99f791e7-7343-42e8-8c19-3c41068b5f8d",
+    "locationType": 2,
+    "orderSort": 76,
+    "code": "none",
+    "visibleStatus": 0,
+    "treeLevel": 2,
+    "kmFromDepart": 300
+  }
+]
+```
+
+#### 3. Query toàn bộ địa điểm
+
+##### Method: GET
+
+##### URL: `https://mobi-api.mobihome.vn/api/v1/mobi/vnpay/location/entire`
+
+##### Response:
+
+Dữ liệu trả về là danh sách thông tin địa điểm bao gồm:
+
+- locationId: Id của địa điểm
+- name: Tên điểm đến
+- keyword: keyword địa điểm
+- locationType: Loại khu vực
+- treeLevel: Mức hiển thị trong cây khu vực
+- visibleStatus: Trạng thái địa điểm (ẩn/ hiện)
+- orderSort: Vị trí sắp xếp.
+
+#### Ví dụ:
+
+**_Request_**
+
+```
+    GET https://mobi-api.mobihome.vn/api/v1/mobi/vnpay/location/entire
+```
+
+**_Dữ liệu trả về dạng json như sau:_**
+
+```
+[
+	{
+	    locationId: "e8c7ae6b-dfd4-413d-b019-8805bb0f7024",
+	    parentId: "00000000-0000-0000-0000-000000000000",
+	    treeLevel: 1,
+	    locationType: 1,
+	    code: "HCM",
+	    orderSort: 2,
+	    name: "HCM",
+	    shortName: "HCM",
+	    fullPathName: "HCM",
+	    keyword: "Sài gòn, Hồ Chí Minh, Thành Phố Hồ Chí Minh, Sài Thành, Hòn Ngọc Viễn Đông, Thành Phố"
+	},
+	{
+	    locationId: "0b9d59c1-f388-4500-b49e-53ac4105e91b",
+	    parentId: "00000000-0000-0000-0000-000000000000",
+	    treeLevel: 1,
+	    locationType: 1,
+	    code: "code",
+	    orderSort: 1,
+	    name: "Hà Nội",
+	    shortName: "Hà Nội",
+	    fullPathName": "Hà Nội",
+	    keyword: ""
+	},
+	{
+	    locationId: "c09c6363-e475-e411-a3aa-001e4ff3ad72",
+	    parentId": "00000000-0000-0000-0000-000000000000",
+	    treeLevel: 1,
+	    locationType: 1,
+	    code: "LĐ",
+	    orderSort: 155,
+	    name: "Lâm Đồng",
+	    shortName: "LĐ",
+	    fullPathName: "Lâm Đồng",
+	    keyword": ""
+	},
+]
+```
+
+### TICKET API
+
+---
+
+#### 1. Query sơ đồ chỗ ngồi
+
+##### Method: GET
+
+##### URL: `https://mobi-api.mobihome.vn/api/v1/ticket/vnpay/seat/map`
+
+##### Request parameters:
+
+- tripId: Id chuyến đi
+- departId: Id điểm đi
+- arrivalId: Id điểm đến
+- phoneNumber: số điện thoại người đặt chỗ
+
+##### Response:
+
+Dữ liệu trả về là danh sách chỗ ngồi của chuyến đi bao gồm:
+
+- seatId: Id chỗ ngồi
+- tripId: Id chuyến đi
+- status: Trạng thái chỗ (0: sẵn có, 1: đã đặt, 2: người khác đang giữ chỗ, 3: bạn đang đặt chỗ)
+- rowSeat: Số thứ tự hàng ghế
+- columnSeat: Số thứ tự cột ghế
+- title: Tiêu đề chỗ ngồi
+
+#### Ví dụ:
+
+**_Request_**
+
+```
+    GET https://mobi-api.mobihome.vn/api/v1/ticket/vnpay/seat/map
+    Parameters: {
+        tripId: "9E8BD04F-891D-EA11-80BE-0CC47A96AAF3",
+        departId: "BA199691-AF8C-E411-83AD-00237DCF4C9C",
+        arrivalId: "30995FCF-B6F5-E511-8A01-005056876D9E",
+        phoneNumber: "0832228128"
+    }
+```
+
+**_Dữ liệu trả về dạng json như sau:_**
+
+```
+[
+  {
+    "seatId": 6864,
+    "tripId": "9e8bd04f-891d-ea11-80be-0cc47a96aaf3",
+    "price": 70000,
+    "status": 1,
+    "mapZoneId": 1,
+    "rowSeat": 0,
+    "columnSeat": 0,
+    "title": "A1"
+  },
+  {
+    "seatId": 6865,
+    "tripId": "9e8bd04f-891d-ea11-80be-0cc47a96aaf3",
+    "price": 70000,
+    "status": 1,
+    "mapZoneId": 1,
+    "rowSeat": 0,
+    "columnSeat": 4,
+    "title": "A3"
+  },
+  {
+    "seatId": 6868,
+    "tripId": "9e8bd04f-891d-ea11-80be-0cc47a96aaf3",
+    "price": 70000,
+    "status": 0,
+    "mapZoneId": 1,
+    "rowSeat": 1,
+    "columnSeat": 2,
+    "title": "A2"
+  },
+]
+```
+
+#### 2. Đặt chỗ
+
+##### Method: POST
+
+##### URL: `https://mobi-api.mobihome.vn/api/v1/ticket/vnpay/seat/select`
+
+##### Request body:
+
+- seatId: Id chỗ muốn đặt
+- departId: Id điểm đi
+- arrivalId: Id điểm đến
+- phoneNumber: số điện thoại người đặt chỗ
+- tripId: Id chuyến đi
+
+##### Response:
+
+Trả về response code là 200 nếu đặt chỗ thành công, 500 nếu đặt chỗ thất bại
+
+#### Ví dụ:
+
+**_Request_**
+
+```
+    POST https://mobi-api.mobihome.vn/api/v1/ticket/vnpay/seat/select
+    Content-Type: application/json
+    Accept: application/json
+    Body: {
+        seatId: 6876,
+        departId: "BA199691-AF8C-E411-83AD-00237DCF4C9C",
+        arrivalId: "30995FCF-B6F5-E511-8A01-005056876D9E",
+        phoneNumber: "0832228128"
+    }
+```
+
+#### 3. Hủy đặt chỗ
+
+##### Method: POST
+
+##### URL: `https://mobi-api.mobihome.vn/api/v1/ticket/vnpay/seat/cancel`
+
+##### Request body:
+
+- seatId: Id chỗ muốn đặt
+- departId: Id điểm đi
+- arrivalId: Id điểm đến
+- phoneNumber: số điện thoại người hủy đặt chỗ
+- tripId: Id chuyến đi
+
+##### Response:
+
+Trả về response code là 200 nếu hủy đặt chỗ thành công, 500 nếu hủy đặt chỗ thất bại
+
+#### Ví dụ:
+
+**_Request_**
+
+```
+    POST https://mobi-api.mobihome.vn/api/v1/ticket/vnpay/seat/cancel
+    Content-Type: application/json
+    Accept: application/json
+    Body: {
+        seatId: 6876,
+        departId: "BA199691-AF8C-E411-83AD-00237DCF4C9C",
+        arrivalId: "30995FCF-B6F5-E511-8A01-005056876D9E",
+        phoneNumber: "0832228128"
+    }
+```
+
+#### 4. Book vé
+
+##### Method: POST
+
+##### URL: `https://mobi-api.mobihome.vn/api/v1/ticket/vnpay/book`
+
+##### Request body:
+
+- seatId: Id chỗ muốn book vé
+- departId: Id điểm đi
+- arrivalId: Id điểm đến
+- phoneNumber: số điện thoại người hủy đặt chỗ
+- name: tên người đặt chỗ
+- tripId: Id chuyến đi
+
+##### Response:
+
+Trả về response code là 200 nếu hủy đặt chỗ thành công, 500 nếu hủy đặt chỗ thất bại
+
+#### Ví dụ:
+
+**_Request_**
+
+```
+    POST https://mobi-api.mobihome.vn/api/v1/ticket/vnpay/book
+    Content-Type: application/json
+    Accept: application/json
+    Body: {
+        seatId: 6876,
+        departId: "BA199691-AF8C-E411-83AD-00237DCF4C9C",
+        arrivalId: "30995FCF-B6F5-E511-8A01-005056876D9E",
+        phoneNumber: "0832228128",
+        name: "Nguyễn Văn A"
+    }
+```
+
+### ORDER API
+
+---
+
+#### 1. Tạo order
+
+##### Method: POST
+
+##### URL: `https://mobi-api.mobihome.vn/api/v1/order/vnpay/order/create-order`
+
+##### Request parameters:
